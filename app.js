@@ -1,19 +1,22 @@
 /*
-    SETUP
+    IMPORTS
 */
 const express = require('express');
+const { engine } = require("express-handlebars");
+const exphbs = require("express-handlebars");
+const fs = require('fs');
+const csv = require('csv-parser');
+
+/*
+    SETUP
+*/
 const app = express();
 const port = process.env.PORT || 3001;
-
-// Require the 'fs' module to work with the file system
-const fs = require('fs');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("views/public"));
 
-const { engine } = require("express-handlebars");
-var exphbs = require("express-handlebars");
 const hbs = exphbs.create({
   partialsDir: "views/partials",
   extname: ".hbs",
@@ -21,36 +24,57 @@ const hbs = exphbs.create({
 app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 
-const filePath = 'files/quotes.csv';
+const filePathGolf = 'files/quotes_golf.csv';
+const filePathBats = 'files/quotes_bats.csv';
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the microservice!');
-});
-
-app.get('/csv', (req, res) => {
-    // Read the CSV file
-    fs.readFile(filePath, 'utf-8', (err, data) => {
-        if (err) {
-            console.error('Error reading CSV file:', err);
-            return res.status(500).send('Internal Server Error');
-        }
-        
-        // Parse the CSV data
-        const rows = data.split('\n');
-        const headers = rows[0].split(',');
-        const rowCount = rows.length;
-        
-        // Randomly select a row (excluding the header row)
-        const randomIndex = Math.floor(Math.random() * (rowCount - 1)) + 1;
-        const selectedRow = rows[randomIndex];
-        
-        // Extract quote and author from the selected row
-        const [id, quote, author, tags] = selectedRow.split(',');
-        
-        // Send only the quote and author as JSON
-        res.json({ quote, author });
+const readCSVFileGolf = (filePathGolf) => {
+    return new Promise((resolve, reject) => {
+        const lines = [];
+        fs.createReadStream(filePathGolf)
+            .pipe(csv())
+            .on('data', (data) => lines.push(data))
+            .on('end', () => resolve(lines))
+            .on('error', (error) => reject(error));
     });
+};
+
+app.get('/random-quote-golf', async (req, res) => {
+    try {
+        const lines = await readCSVFileGolf(filePathGolf);
+        const randomIndex = Math.floor(Math.random() * lines.length);
+        const randomQuote = lines[randomIndex];
+        res.json(randomQuote);
+    } catch (error) {
+        console.error('Error reading CSV file:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
+
+const readCSVFileBats = (filePathBats) => {
+    return new Promise((resolve, reject) => {
+        const lines = [];
+        fs.createReadStream(filePathBats)
+            .pipe(csv())
+            .on('data', (data) => lines.push(data))
+            .on('end', () => resolve(lines))
+            .on('error', (error) => reject(error));
+    });
+};
+
+app.get('/random-quote-bats', async (req, res) => {
+    try {
+        const lines = await readCSVFileBats(filePathBats);
+        const randomIndex = Math.floor(Math.random() * lines.length);
+        const randomQuote = lines[randomIndex];
+        res.json(randomQuote);
+    } catch (error) {
+        console.error('Error reading CSV file:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
 
 app.listen(port, () => {
     console.log(`Microservice listening at http://localhost:${port}`);
