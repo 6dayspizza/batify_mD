@@ -1,10 +1,12 @@
 /*
     SETUP
 */
-
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3001;
+
+// Require the 'fs' module to work with the file system
+const fs = require('fs');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,8 +21,21 @@ const hbs = exphbs.create({
 app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 
-app.get('/', (req, res) => {
-    res.send('Im telling you!');
+// Define the path to your CSV file
+const filePath = 'files/quotes.csv';
+
+// Endpoint to serve the CSV file
+app.get('/csv', (req, res) => {
+    // Read the CSV file
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+        if (err) {
+            console.error('Error reading CSV file:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+        // Send the CSV file as response
+        res.header('Content-Type', 'text/csv');
+        res.send(data);
+    });
 });
 
 app.listen(port, () => {
