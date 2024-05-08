@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
     res.send('Welcome to the microservice!');
 });
 
-// Endpoint to serve the CSV file
 app.get('/csv', (req, res) => {
     // Read the CSV file
     fs.readFile(filePath, 'utf-8', (err, data) => {
@@ -35,9 +34,21 @@ app.get('/csv', (req, res) => {
             console.error('Error reading CSV file:', err);
             return res.status(500).send('Internal Server Error');
         }
-        // Send the CSV file as response
-        res.header('Content-Type', 'text/csv');
-        res.send(data);
+        
+        // Parse the CSV data
+        const rows = data.split('\n');
+        const headers = rows[0].split(',');
+        const rowCount = rows.length;
+        
+        // Randomly select a row (excluding the header row)
+        const randomIndex = Math.floor(Math.random() * (rowCount - 1)) + 1;
+        const selectedRow = rows[randomIndex];
+        
+        // Extract quote and author from the selected row
+        const [id, quote, author, tags] = selectedRow.split(',');
+        
+        // Send only the quote and author as JSON
+        res.json({ quote, author });
     });
 });
 
