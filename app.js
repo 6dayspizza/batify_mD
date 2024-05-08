@@ -8,6 +8,12 @@ const fs = require('fs');
 const csv = require('csv-parser');
 
 
+/*
+    SETUP
+*/
+const app = express();
+const port = process.env.PORT || 3001;
+
 // Enable CORS middleware
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
@@ -16,12 +22,6 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
   });
-
-/*
-    SETUP
-*/
-const app = express();
-const port = process.env.PORT || 3001;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -86,7 +86,6 @@ app.get('/random-quote-bats', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 
 
