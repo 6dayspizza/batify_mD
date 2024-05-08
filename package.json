@@ -19,6 +19,7 @@
   "homepage": "https://github.com/6dayspizza/batify_mA#readme",
   "dependencies": {
     "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
     "hbs": "^4.2.0"
   },
   "devDependencies": {
