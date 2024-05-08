@@ -1,3 +1,0 @@
-# .gitattributes
-node_modules/
-node_modules/* -text
