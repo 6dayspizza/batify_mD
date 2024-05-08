@@ -38,6 +38,10 @@ const readCSVFileGolf = (filePathGolf) => {
     });
 };
 
+app.get('/', (req, res) => {
+    res.send('hello');
+});
+
 app.get('/random-quote-golf', async (req, res) => {
     try {
         const lines = await readCSVFileGolf(filePathGolf);
