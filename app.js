@@ -21,8 +21,11 @@ const hbs = exphbs.create({
 app.engine(".hbs", hbs.engine);
 app.set("view engine", ".hbs");
 
-// Define the path to your CSV file
 const filePath = 'files/quotes.csv';
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the microservice!');
+});
 
 // Endpoint to serve the CSV file
 app.get('/csv', (req, res) => {
