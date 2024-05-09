@@ -6,7 +6,11 @@ const { engine } = require("express-handlebars");
 const exphbs = require("express-handlebars");
 const fs = require('fs');
 const csv = require('csv-parser');
-
+const cors = require('cors');
+const corsOptions = {
+    origin: 'https://lit-everglades-39146-fd2b4b5a3c5f.herokuapp.com',//(https://your-client-app.com)
+    optionsSuccessStatus: 200,
+  };
 
 /*
     SETUP
@@ -14,18 +18,12 @@ const csv = require('csv-parser');
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Enable CORS middleware
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-  });
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("views/public"));
+app.use(cors(corsOptions));
 
 const hbs = exphbs.create({
   partialsDir: "views/partials",
