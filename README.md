@@ -1,14 +1,14 @@
 # __INSTRUCTIONS TO IMPLEMENT MICROSERVICE A__
-for Node.js/Express, and assuming these are already installed. if not using Node.js/Express, adapt instructions to language.
+for Node.js/Express, and assuming these are already installed. if not using Node.js/Express, adapt instructions to language.\
 
-## __setting up sender:__
-1. app reads a CSV with golf quotes. find it here:__
-   https://github.com/6dayspizza/batify_mA/blob/main/files/quotes_golf.csv__
-2. randomly selects one__
-3. packs it into a JSON object and sends into the void through HTTP request. example:__
-   `{"id":"8","quote":"I know I am getting better at golf because I am hitting fewer spectators.","author":"Gerald Ford","tags":"golf"}`__
+## __setting up sender:\
+1. app reads a CSV with golf quotes. find it here:\
+   https://github.com/6dayspizza/batify_mA/blob/main/files/quotes_golf.csv \
+2. randomly selects one\
+3. packs it into a JSON object and sends into the void through HTTP request. example:\
+   `{"id":"8","quote":"I know I am getting better at golf because I am hitting fewer spectators.","author":"Gerald Ford","tags":"golf"}`\
 
-## __setting up receiver:__
+## __setting up receiver:\
 1. in app.js of main app, write:
    `const axios = require('axios');`
 2. install new dependency:
