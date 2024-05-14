@@ -22,12 +22,12 @@ for Node.js/Express, and assuming these are already installed. if not using Node
            return response.data;
        } catch (error) {
            console.error('Error fetching data from microservice:', error);
-       }<br/>
+       }
    }
    
    async function showQuote() {
        const data = await fetchData();
-       const { quote, author } = data;`
+       const { quote, author } = data;
    
        const quoteAuthor = document.getElementById('quoteAuthor');
        quoteAuthor.innerHTML = `<p>"${quote}"</p><p> (${author})</p>`;
