@@ -39,3 +39,5 @@ for Node.js/Express, and assuming these are already installed. if not using Node
    `<button id="popupTrigger" class="popup" onclick="showQuote()">`\
 \
 and that was it!
+
+![UML](uml_diagram.png)
